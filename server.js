@@ -7,19 +7,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 var todoList = [
     {
-        id: 1,
+        id: "1",
         todo: "Implement a REST API"
     }
 ];
 
 // GET /api/todos
 // This should respond with the full list of todo items.
-
+app.get('/api/todos', function (req, res, next) {
+    for(var i = 0; i < todoList.length; i++) {
+        res.send(todoList[i].todo)
+    }
+})
 // GET /api/todos/:id
 // This should respond with the information for the matching todo item
 // by id.
 // If the matching todo does not exist, the server should respond
 // with a 404 status code.
+app.get('/api/todos/:id', function (req, res, next) {
+    var pageReq = req.params.id
+    var todo = todoList[0].todo
+    var todoId = todoList[0].id
+    console.log(pageReq)
+    console.log(todo)
+    if(todoId != pageReq) {
+        res.send("404 Status: This doesn't exist")
+    } else {
+        res.send(todo)
+    }
+})
 
 // POST /api/todos
 // This should take the body of the request and add it to todoList.
