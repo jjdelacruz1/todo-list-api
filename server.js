@@ -6,6 +6,8 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(__dirname + '/public'));
+
 var todoList = [
     {
         id: uuid(),
@@ -88,6 +90,20 @@ app.put('/api/todos/:id', function (request, response, nextFn) {
 // This endpoint should respond with the new length of the list.
 // If the matching todo does not exist, the server should respond
 // with a 404 status code.
+
+app.delete('/api/todos/:id', function(request, response, nextFn) {
+    const todoItem = fetchTodoById(request.params.id)
+    const newTodoItems = todoList.filter((todoList) => todoList.id != todoItem)
+    console.log(todoItem)
+
+    if(!newTodoItems) {
+        response.sendStatus(404)
+        return
+    } else {
+        todoList = newTodoItems
+        response.send(todoList)
+    }
+})
 
 
 app.listen(3000, function(){
