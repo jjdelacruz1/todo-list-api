@@ -93,16 +93,14 @@ app.put('/api/todos/:id', function (request, response, nextFn) {
 
 app.delete('/api/todos/:id', function(request, response, nextFn) {
     const todoItem = fetchTodoById(request.params.id)
-    const newTodoItems = todoList.filter((todoList) => todoList.id != todoItem)
-    console.log(todoItem)
-
-    if(!newTodoItems) {
+    if(!todoItem) {
         response.sendStatus(404)
         return
-    } else {
-        todoList = newTodoItems
-        response.send(todoList)
-    }
+    } 
+    const index = todoList.indexOf(todoItem)
+    todoList.splice(index, 1)
+
+    response.send(todoList)
 })
 
 
